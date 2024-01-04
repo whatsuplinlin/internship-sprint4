@@ -45,14 +45,14 @@
           fill="black"
         />
       </svg>
-      <p v-if="currentPage < totalPages" id="border">
+      <!-- <p v-if="currentPage < totalPages" id="border">
         Showing {{ startIndex + 1 }} – {{ endIndex }} of
         {{ filteredItems.length }} results
       </p>
       <p v-if="currentPage === totalPages" id="border">
         Showing {{ startIndex + 1 }} – {{ filteredItems.length }} of
         {{ filteredItems.length }} results
-      </p>
+      </p> -->
     </div>
     <div class="showing">
       <p>Show</p>
@@ -78,7 +78,7 @@
       <Product v-for="(item, index) in itemData" :key="index" :item="item" />
     </div>
 
-    <div class="page-number">
+    <!-- <div class="page-number">
       <button
         @click="goToPage(currentPage - 1)"
         :disabled="currentPage === 1"
@@ -101,7 +101,7 @@
       >
         Next
       </button>
-    </div>
+    </div> -->
   </div>
 
   <BottomBanner v-if="isDesktop" />

@@ -75,17 +75,11 @@
             :key="item.id"
             id="price-container"
           >
-            <p>
-              Rp.
-              {{
-                formatNumber(
-                  parseFloat(item.price.replace(/,/g, "")) * item.quantity
-                )
-              }}
+            <p>THB {{ convertPrice(item.price * item.quantity) }}
             </p>
           </div>
-          <p id="subtotal">Rp {{ calculateTotal }}</p>
-          <p id="total">Rp {{ calculateTotal }}</p>
+          <p id="subtotal">THB {{ calculateTotal }}</p>
+          <p id="total">THB {{ calculateTotal }}</p>
         </div>
       </div>
       <div class="payment-method">
@@ -165,19 +159,18 @@ const title = {
   name: "Checkout",
 };
 
-function formatNumber(number) {
-  return number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+function convertPrice(price) {
+  return new Intl.NumberFormat().format(price);
 }
 
 const calculateTotal = computed(() => {
   let total = 0;
   for (let i = 0; i < useCartStore().items.length; i++) {
     const subtotal =
-      Number(useCartStore().items[i].price.replace(/,/g, "")) *
-      useCartStore().items[i].quantity;
+      Number(useCartStore().items[i].price) * useCartStore().items[i].quantity;
     total += subtotal;
   }
-  return formatNumber(total);
+  return convertPrice(total);
 });
 </script>
 

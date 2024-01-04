@@ -30,15 +30,10 @@
           <img v-if="item.id === 8" src="~/assets/product/img-potty.png" />
           <p>{{ item.name }}</p>
         </div>
-        <p>Rp. {{ item.price }}</p>
+        <p>THB {{ convertPrice(item.price) }}</p>
         <p>{{ item.quantity }}</p>
         <p>
-          Rp.
-          {{
-            formatNumber(
-              parseFloat(item.price.replace(/,/g, "")) * item.quantity
-            )
-          }}
+          THB {{ convertPrice(item.price * item.quantity) }}
         </p>
         <svg
           @click="useCartStore().removeItem(index)"
@@ -60,18 +55,13 @@
       <div v-for="item in useCartStore().items" :key="item.id" id="sub-total">
         <p>Subtotal</p>
         <p>
-          Rp
-          {{
-            formatNumber(
-              parseFloat(item.price.replace(/,/g, "")) * item.quantity
-            )
-          }}
+          THB {{ convertPrice(item.price * item.quantity) }}
         </p>
       </div>
       <div id="total-container">
         <div id="total">
           <p>Total</p>
-          <p>Rp {{ calculateTotal }}</p>
+          <p>THB {{ calculateTotal }}</p>
         </div>
       </div>
       <button><NuxtLink to="/cart/checkout">Check Out</NuxtLink></button>
@@ -103,19 +93,18 @@ const title = {
   name: "Cart",
 };
 
-function formatNumber(number) {
-  return number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+function convertPrice(price) {
+  return new Intl.NumberFormat().format(price);
 }
 
 const calculateTotal = computed(() => {
   let total = 0;
   for (let i = 0; i < useCartStore().items.length; i++) {
     const subtotal =
-      Number(useCartStore().items[i].price.replace(/,/g, "")) *
-      useCartStore().items[i].quantity;
+      Number(useCartStore().items[i].price) * useCartStore().items[i].quantity;
     total += subtotal;
   }
-  return formatNumber(total);
+  return convertPrice(total);
 });
 </script>
 
